@@ -48,6 +48,8 @@ public class $004FindMedianSortedArrays {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
 //        return copyAndSort(nums1, nums2);
         return compareAndMove(nums1, nums2);
+
+        // TODO: 官方的解决方案
     }
 
     /**
