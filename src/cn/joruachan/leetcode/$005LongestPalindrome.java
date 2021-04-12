@@ -42,22 +42,7 @@ public class $005LongestPalindrome {
     // 直到遇到栈中有重复的元素再出栈
 
     public String longestPalindrome(String s) {
-//        Stack<Character> stack = new Stack<>();
-//
-//        char[] chars = s.toCharArray();
-//        for (char aChar : chars) {
-//            if (stack.contains(aChar)) {
-//                // 退出
-//            } else {
-//                // 没有包含则push进去
-//                stack.push(aChar);
-//            }
-//        }
-//
-//        while (!stack.contains()) {
-//
-//        }
-
+        // TODO: 待解决
         return exhaustive(s);
     }
 
@@ -107,8 +92,6 @@ public class $005LongestPalindrome {
                     result = temp;
                 }
             }
-
-
         }
         return result;
     }
