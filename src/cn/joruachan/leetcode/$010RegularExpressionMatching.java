@@ -54,71 +54,106 @@ public class $010RegularExpressionMatching {
     // 我的思路：一段段拆分，判断是否满足，直到不满足的
     // 尽最大可能满足，直到不满足则截断；
 
+    // 更新思路：从尾部开始检测, 遇到.*, 再从正向判断；一直到全部字符验证过
+
     // TODO: 未解决
     public boolean isMatch(String s, String p) {
-        char[] sChars = s.toCharArray();
-        int sIndex = 0;
-
-        char[] pChars = p.toCharArray();
-        int pIndex = 0;
-        while (sIndex < sChars.length && pIndex < pChars.length) {
-            if (sChars[sIndex] == pChars[pIndex]) {
-                // 相等则继续下一个
-                sIndex++;
-                pIndex++;
-            } else if (pChars[pIndex] == '.') {
-                // 如果不相等，但是校验字符是.
-                sIndex++;
-                pIndex++;
-            } else if (pChars[pIndex] == '*') {
-                if (pIndex - 1 < 0) {
-                    return false;
-                }
-
-                if (pIndex + 1 < pChars.length) {
-
-                }
-
-                // 如果不相等，但是校验字符是*。需要看下校验规则的前置字符
-                // 前置字符不相等的话，由于*可以代表0个，所以也可以放过；
-                if (pChars[pIndex - 1] == sChars[sIndex]) {
-                    // 满足规则*前面的字符
-                    sIndex++;
-                } else if (pChars[pIndex - 1] == '.') {
-                    // 如果后面只是.*，则没事
-                    // 但是如果.*后面还有，则麻烦了
-                    if (pIndex == pChars.length - 1) {
-                        // 说明前面的都校验过了，然后校验规则末尾两个字符是：.*
-                        return true;
-                    } else if (sIndex == sChars.length - 1) {
-                        // 虽然校验规则的字符没到末尾，但是被校验的字符到末尾了，不合格
-                        return false;
-                    } else {
-                        // TODO: 如果.*后面还有，怎么处理
-                        System.out.println("TODO");
-                        sIndex++;
-                    }
-                } else {
-                    // 因为*可以表示0个，所以让过，但是被校验的字符指针不能变
-                    pIndex++;
-                }
-            } else {
-                // 不相等，但是也不是./*, 看下校验规则是不是[某个字符]*
-                if (pIndex + 1 < pChars.length && pChars[pIndex + 1] == '*') {
-                    // 让他判断是不是满足*
-                    pIndex++;
-                } else {
-                    return false;
-                }
-            }
-        }
-
-        // 能到这里说明，要么规则字符结束了，要么比较字符结束了。
-        // 或者最后校验规则最后为*
-        return sIndex == sChars.length && (pIndex == pChars.length || (pIndex == pChars.length - 1 && pChars[pIndex] == '*'));
+        return false;
     }
 
     public static void main(String[] args) {
         System.out.println(new $010RegularExpressionMatching().isMatch("aaa", "a*a"));
     }
+
+//    /**
+//     * 两个指针，一个指针指向校验规则，一个指针指向比对的字符串<br>
+//     * 从尾部循环，如果
+//     *
+//     * @param s 比对字符串
+//     * @param p 校验规则
+//     */
+//    private boolean recycleFromTail(String s, String p) {
+//        int sIndex = s.length() - 1, pIndex = p.length() - 1;
+//        while (pIndex >= 0 && sIndex >= 0) {
+//            if (p.charAt(pIndex) == '*') {
+//                if (pIndex <= 0) {
+//                    // 无法比对
+//                    continue;
+//                }
+//
+//                if (p.charAt(pIndex - 1) == '.') {
+//                    // ".*"的情况
+//                    sIndex = matchDotAndStar(s, p, sIndex, pIndex);
+//                    pIndex -= 2;
+//                } else {
+//                    // "字符*"的情况
+//                    sIndex = matchCharAndStar(s, p, sIndex, pIndex);
+//                    pIndex -= 2;
+//                }
+//            } else if (p.charAt(pIndex) == '.') {
+//                // .的情况
+//                --sIndex;
+//                --pIndex;
+//            } else {
+//                // 普通字符
+//                if (p.charAt(pIndex) != s.charAt(sIndex)) return false;
+//
+//                --sIndex;
+//                --pIndex;
+//            }
+//        }
+//
+//        // 都比对结束了
+//        if (pIndex == 0 && sIndex == 0) return true;
+//    }
+//
+//    /**
+//     * 如果pIndex为*号,前个字符为普通字符, 后续比对的逻辑写在此
+//     *
+//     * @param s      比对字符串
+//     * @param p      规则字符串
+//     * @param sIndex 开始比对的下标
+//     * @param pIndex 规则的下标
+//     * @return 返回的是: <strong>比对字符不满足*前的下标;</strong>
+//     */
+//    private int matchCharAndStar(String s, String p, int sIndex, int pIndex) {
+//        // *前面一个字符
+//        char c = p.charAt(pIndex - 1);
+//
+//        // 普通字符, 则判断s前面有几个这样的字符
+//        while (sIndex >= 0) {
+//            if (s.charAt(sIndex) != c) return sIndex;
+//            --sIndex;
+//        }
+//        return sIndex;
+//    }
+//
+//    /**
+//     * 如果pIndex为"*",前个字符为".", 后续比对的逻辑写在此
+//     *
+//     * @param s      比对字符串
+//     * @param p      规则字符串
+//     * @param sIndex 开始比对的下标
+//     * @param pIndex 规则的下标
+//     * @return 返回的是: <strong>比对字符不满足*前的下标;</strong>
+//     */
+//    private int matchDotAndStar(String s, String p, int sIndex, int pIndex) {
+//        if (pIndex == 1) {
+//            // .*开头, 其实不需要管了
+//            return -1;
+//        }
+//
+//        // .*前面的字符
+//        char c = p.charAt(pIndex - 2);
+//        if (c == '*') {
+//            // 判断下前两个是否还是".*", 即连着的'.*', 其实就是一个.*
+//            if (pIndex >= 3 && p.charAt(pIndex - 3) == '.') return sIndex;
+//
+//
+//        } else if (c == '.'){
+//
+//        } else {
+//            // 普通字符
+//        }
+//    }
 }
