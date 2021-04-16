@@ -37,6 +37,7 @@ package cn.joruachan.leetcode;
  *
  * @author JoruaChan
  * @grade 中等
+ * @solution 通过双指针的方式，但是需要明白值小的指针往另一侧移动的推理过程
  */
 public class $011ContainerWithMostWater {
     // 两个指针，指向头尾，然后将指针对应的值较小的那个指针往另个指针方向移动；
