@@ -53,7 +53,7 @@ public class $018FourSum {
 
             if (nums[i0] + nums[i0 + 1] + nums[i0 + 2] + nums[i0 + 3] > target) {
                 // 最开始的4个已经大于target
-                continue;
+                break;
             }
 
             if (nums[i0] + nums[nums.length - 3] + nums[nums.length - 2] + nums[nums.length - 1] < target) {
@@ -62,7 +62,7 @@ public class $018FourSum {
             }
 
             for (int i1 = i0 + 1; i1 < nums.length - 2; i1++) {
-                if (nums[i1] == nums[i1 - 1]) {
+                if (i1 > i0 + 1 && nums[i1] == nums[i1 - 1]) {
                     // 和前一个重复了
                     continue;
                 }
@@ -70,7 +70,7 @@ public class $018FourSum {
                 int numi0i1 = nums[i0] + nums[i1];
                 if (numi0i1 + nums[i1 + 1] + nums[i1 + 2] > target) {
                     // 头2已经大于target
-                    continue;
+                    break;
                 }
 
                 if (numi0i1 + nums[nums.length - 2] + nums[nums.length - 1] < target) {
@@ -79,28 +79,29 @@ public class $018FourSum {
                 }
 
                 int left = i1 + 1, right = nums.length - 1;
-                int lValue, rValue;
                 while (left < right) {
-                    lValue = nums[left];
-                    rValue = nums[right];
-
-                    int sum = numi0i1 + lValue + rValue;
+                    int sum = numi0i1 + nums[left] + nums[right];
                     if (sum > target) {
-                        // 右指针向左移，直到找到不一样的
-                        while (nums[--right] == rValue) {
-                        }
+                        // 右指针向左移
+                        --right;
                     } else if (sum < target) {
-                        // 左指针向右移，直到找到不一样的
-                        while (nums[++left] == lValue) {
-                        }
+                        // 左指针向右移
+                        ++left;
                     } else {
                         List<Integer> result = new ArrayList<>();
-                        result.add(i0);
-                        result.add(i1);
-                        result.add(left);
-                        result.add(right);
-
+                        result.add(nums[i0]);
+                        result.add(nums[i1]);
+                        result.add(nums[left]);
+                        result.add(nums[right]);
                         results.add(result);
+
+                        while (left < right && nums[left] == nums[left + 1]) {
+                            left++;
+                        }
+
+                        while (left < right && nums[right] == nums[right - 1]) {
+                            right--;
+                        }
                     }
                 }
             }
@@ -109,6 +110,6 @@ public class $018FourSum {
     }
 
     public static void main(String[] args) {
-        System.out.println(new $018FourSum().fourSum(new int[]{1, 0, -1, 0, -2, 2}, 0));
+        System.out.println(new $018FourSum().fourSum(new int[]{2, 2, 2, 2, 2}, 8));
     }
 }
