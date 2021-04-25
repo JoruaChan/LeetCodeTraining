@@ -42,27 +42,68 @@ public class $019RemoveNthNodeFromEndOfList {
     // 另外一个思路是看了标签提示想到：双指针，一个指针A在头部，另一个指针B间隔N个.当B到尾部的时候，A的位置就是倒数N的元素
 
     public ListNode removeNthFromEnd(ListNode head, int n) {
-        ListNode cycleNode = head;
-        ListNode pointNode = null;
-        for (int index = 1; cycleNode != null; index++) {
-            if (index == n + 1) {
-                // 必须要n+1，因为你要到找到前一个
-                pointNode = head;
-            }
+//        return selfSolution(head, n);
 
-            cycleNode = cycleNode.next;
-            if (index > n + 1) {
-                pointNode = pointNode.next;
-            }
+        ListNode dummy = new ListNode(0, head);
+
+        // 先将第一个指针移到n的位置
+        ListNode firstNode = head;
+        ListNode secondNode = dummy;
+        for (int i = 0; i < n; i++) {
+            firstNode = firstNode.next;
         }
 
-        if (pointNode == null) {
-            // 说明index还没达到n+1就结束了
-            return null;
+        while (firstNode != null) {
+            firstNode = firstNode.next;
+            secondNode = secondNode.next;
         }
 
-        ListNode deleteNode = pointNode.next;
-        pointNode.next = deleteNode.next;
+        secondNode.next = secondNode.next.next;
+        ListNode ans = dummy.next;
+        return ans;
+    }
+
+    // 没完全解决出来
+    private ListNode selfSolution(ListNode head, int n) {
+        ListNode first = head, second = head;
+
+        // first先遍历n次，second再遍历
+        int index = 1;
+        while (first != null) {
+            if (index >= n) {
+                second = second.next;
+            }
+
+            first = first.next;
+        }
+
+
+//        ListNode cycleNode = head;
+//        ListNode pointNode = null;
+//
+//        int index = 1;
+//        for (; cycleNode != null; index++) {
+//            if (index == n + 1) {
+//                // 必须要n+1，因为你要到找到前一个
+//                pointNode = head;
+//            }
+//
+//            cycleNode = cycleNode.next;
+//            if (index > n + 1) {
+//                pointNode = pointNode.next;
+//            }
+//        }
+//
+//        if (pointNode == null) {
+//            if (index == n){
+//                // 如果就是最后一个
+//            }
+//            // 说明index还没达到n+1就结束了
+//            return null;
+//        }
+//
+        ListNode deleteNode = second.next;
+        second.next = deleteNode.next;
         deleteNode = null;
 
         return head;
@@ -88,11 +129,11 @@ public class $019RemoveNthNodeFromEndOfList {
     public static void main(String[] args) {
         ListNode node5 = new ListNode(5);
         ListNode node4 = new ListNode(4, node5);
-//        ListNode node3 = new ListNode(3, node4);
-//        ListNode node2 = new ListNode(2, node3);
-//        ListNode node1 = new ListNode(1, node2);
+        ListNode node3 = new ListNode(3, node4);
+        ListNode node2 = new ListNode(2, node3);
+        ListNode node1 = new ListNode(1, node2);
 
-        ListNode node = new $019RemoveNthNodeFromEndOfList().removeNthFromEnd(node4, 2);
+        ListNode node = new $019RemoveNthNodeFromEndOfList().removeNthFromEnd(node1, 5);
         while (node != null) {
             System.out.print(node.val + " ");
             node = node.next;
