@@ -35,22 +35,6 @@ package cn.joruachan.leetcode;
  * @grade 中等
  */
 public class $002AddTwoNumbers {
-    private class ListNode {
-        int val;
-        ListNode next;
-
-        ListNode() {
-        }
-
-        ListNode(int val) {
-            this.val = val;
-        }
-
-        ListNode(int val, ListNode next) {
-            this.val = val;
-            this.next = next;
-        }
-    }
 
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         // 思路：从尾部开始相加，如果大于10，则表示下一位要加一；
