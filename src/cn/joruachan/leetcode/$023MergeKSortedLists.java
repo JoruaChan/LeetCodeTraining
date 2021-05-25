@@ -35,6 +35,8 @@ package cn.joruachan.leetcode;
  */
 public class $023MergeKSortedLists {
     // 我的思路：分治法，两两比较，最后合并结果
+
+    // TODO:使用分治法+迭代
     public ListNode mergeKLists(ListNode[] lists) {
         if (lists == null || lists.length == 0) return null;
         if (lists.length == 1) return lists[0];
@@ -50,9 +52,9 @@ public class $023MergeKSortedLists {
     }
 
     public static void main(String[] args) {
-      ListNode node=  new $023MergeKSortedLists().mergeKLists(new ListNode[]{});
-      while ((node = node.next) != null) {
-          System.out.print(node.val + " ");
-      }
+        ListNode node = new $023MergeKSortedLists().mergeKLists(new ListNode[]{});
+        while ((node = node.next) != null) {
+            System.out.print(node.val + " ");
+        }
     }
 }
